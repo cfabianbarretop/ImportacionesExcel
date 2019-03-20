@@ -15,6 +15,7 @@ import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import textocolor.Imprimir;
 
 public class Cuentas {
 
@@ -23,6 +24,7 @@ public class Cuentas {
     public static ArrayList<String[]> importarDatos(String fileName, int numSheet, int numRow) throws SQLException, ClassNotFoundException {
         ArrayList<String[]> data = new ArrayList<>();
         for (int hoja = 0; hoja < numSheet; hoja++) {
+            System.err.println("HOJA "+(hoja+1));
             try {
                 FileInputStream file = new FileInputStream(new File(fileName));
                 XSSFWorkbook workbook = new XSSFWorkbook(file);
@@ -47,10 +49,10 @@ public class Cuentas {
                 tablas = columna / 8;
 //            tablas+=1;//VALOR AUMENTA EN SER NECESARIO
                 int celda = 0;
-
+                System.err.println("TABLAS "+tablas);
                 for (int tab = 0; tab < tablas; tab++) {
                     Iterator<Row> rowIter = sheet.iterator();
-                    System.out.println("------------------Tabla " + (tab + 1) + "--------------------");
+                    Imprimir.til("------------------Tabla " + (tab + 1) + "--------------------");
                     for (int row = 0; row < fila; row++) {
                         String[] Fila = new String[8];
                         int posc = 0;
@@ -99,7 +101,7 @@ public class Cuentas {
                         if (x == 0) {
                             cuenta = data.get(x)[1];
                             nombre = data.get(x)[5];
-                            System.out.println("Cuenta: " + cuenta);
+                            Imprimir.adv("Cuenta: " + cuenta);
                         } else {
 //                            guardarDatos(cuenta, nombre, data.get(x)[0], data.get(x)[1], data.get(x)[2], data.get(x)[3], data.get(x)[4], data.get(x)[5], data.get(x)[6]);
                             System.out.println("| " + cuenta + " | " + nombre + " | " + data.get(x)[0] + " | " + data.get(x)[1] + " | " + data.get(x)[2] + " | " + data.get(x)[3] + " | " + data.get(x)[4] + " | " + data.get(x)[5] + " | " + data.get(x)[6] + " |");
@@ -114,7 +116,7 @@ public class Cuentas {
                 System.err.println("ERROR en la importacion de datos\n" + e);
             }
         }
-        System.out.println("Excel importado correctamente\n");
+        Imprimir.conf("Excel importado correctamente\n");
         return data;
     }
 
@@ -153,7 +155,7 @@ public class Cuentas {
     public static void conecxio() {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
-            cn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "sigma", "sigma");
+            cn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "sigmaup", "sigmaup");
         } catch (Exception e) {
             System.out.println("ERRROR en la conxion de la base de datos\n" + e);
         }

@@ -15,12 +15,13 @@ import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import textocolor.Imprimir;
 
 public class CreditoEmergente {
 
     private static Connection cn = null;
 
-    public static ArrayList<String[]> importarDatos(String fileName, int numSheet, int numColums, int numRow) throws SQLException, ClassNotFoundException {
+    public static ArrayList<String[]> importarDatos(String fileName, int numSheet, int numColums, int numRow) throws SQLException, ClassNotFoundException  {
         ArrayList<String[]> data = new ArrayList<>();
         for (int hoja = 0; hoja < numSheet; hoja++) {
             try {
@@ -75,10 +76,10 @@ public class CreditoEmergente {
                     }
                     numFila++;
                 }
-                System.err.println("----------------------------------------------------------TABLA----------------------------------------------------------");
-                System.out.print(data.get(0)[1] + "\t" + data.get(0)[3] + "\t" + data.get(1)[1] + "\t" + data.get(1)[3] + "\t" + data.get(1)[5] + "\t" + data.get(2)[1] + "\t" + data.get(2)[4] + "\t"
+                Imprimir.til("----------------------------------------------------------TABLA----------------------------------------------------------");
+                Imprimir.adv(data.get(0)[1] + "\t" + data.get(0)[3] + "\t" + data.get(1)[1] + "\t" + data.get(1)[3] + "\t" + data.get(1)[5] + "\t" + data.get(2)[1] + "\t" + data.get(2)[4] + "\t"
                         + data.get(2)[6] + "\t" + data.get(3)[2] + "\t" + data.get(3)[10] + "\n");
-                System.err.println("-------------------------------------------------------------------------------------------------------------------------");
+                Imprimir.til("-------------------------------------------------------------------------------------------------------------------------");
                 conexio();
 //                guardarCabecera(data.get(0)[1], data.get(0)[3], data.get(1)[1], data.get(1)[3], data.get(1)[5], data.get(2)[1], data.get(2)[4], data.get(2)[6], data.get(3)[2], data.get(3)[10]);
                 for (int i = 5; i < data.size(); i++) {
@@ -94,7 +95,7 @@ public class CreditoEmergente {
                 System.out.println("ERROR\n" + e);
             }
         }
-        System.out.println("Excel importado correctamente\n");
+        Imprimir.conf("Excel importado correctamente\n");
         return data;
     }
 
@@ -163,7 +164,7 @@ public class CreditoEmergente {
     public static void conexio() {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
-            cn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "sigma", "sigma");
+            cn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "sigmaup", "sigmaup");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("ERROR en la conexion a la BD\n" + e);
         }
